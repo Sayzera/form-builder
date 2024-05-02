@@ -1,6 +1,12 @@
+
 import type { Metadata } from "next";
+import { ClerkProvider } from '@clerk/nextjs'
+
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/toaster";
+import DesignerContextProvider from "@/context/DesignerContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +21,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <ClerkProvider>
+      <DesignerContextProvider>
+      <html lang="tr">
+      <body className={inter.className}  suppressHydrationWarning={true}>
+        <ThemeProvider
+         attribute="class"
+         defaultTheme="system"
+         enableSystem
+         disableTransitionOnChange
+        >
+          {children}
+        <Toaster />
+        </ThemeProvider>
+        </body>
     </html>
+      </DesignerContextProvider>
+ 
+    </ClerkProvider>
+
   );
 }
